@@ -1,0 +1,2 @@
+elastic_metrics_rpm: "metricbeat-{{elastic_metrics_version}}-x86_64.rpm"
+telegraf_rpm: "telegraf-{{ telegraf_version }}.x86_64.rpm"

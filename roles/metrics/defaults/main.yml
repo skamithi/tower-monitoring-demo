@@ -1,0 +1,4 @@
+elastic_metrics_version: 6.2.4
+telegraf_version: 1.6.2-1
+telegraf_user: admin
+telegraf_passwd: tower

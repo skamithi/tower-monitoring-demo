@@ -1,0 +1,17 @@
+---
+- name: copy telegraf rpm to tmp directory
+  copy:
+    src: "{{ telegraf_rpm }}"
+    dest: "/tmp/{{telegraf_rpm }}"
+
+- name: install telegraf rpm
+  yum:
+    name: "/tmp/{{telegraf_rpm }}"
+
+- name: configure telegraf config
+  template:
+    src: telegraf.conf.j2
+    dest: /etc/telegraf/telegraf.conf
+    backup: yes
+  notify:
+    - restart telegraf

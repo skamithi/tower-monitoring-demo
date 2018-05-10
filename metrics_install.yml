@@ -1,0 +1,4 @@
+---
+- hosts: tower
+  roles:
+    - metrics
