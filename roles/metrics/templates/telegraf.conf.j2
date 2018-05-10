@@ -41,13 +41,6 @@
 
 [[inputs.system]]
 
-[[inputs.http]]
-   urls = [
-     "http://localhost/api/v2/ping/"
-   ]
-   method = "GET"
-   username = "{{telegraf_user}}"
-   password = "{{telegraf_passwd}}"
-   timeout = "5s"
-   data_format = "json"
-
+[[inputs.exec]]
+  commands = ['/usr/local/bin/tower_capacity.py']
+  data_format = 'influx'
