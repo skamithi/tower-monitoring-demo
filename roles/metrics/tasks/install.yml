@@ -8,13 +8,15 @@
   yum:
     name: "/tmp/{{telegraf_rpm }}"
 
-- name: copy sys capacity monitoring script
+- name: copy telegraf scripts
   copy:
-    src: tower_capacity.py
-    dest: /usr/local/bin/tower_capacity.py
+    src: "{{ item }}"
+    dest: "/usr/local/bin/{{item}}"
     mode: 0755
+  with_items: "{{ telegraf_exec_scripts }}"
   notify:
     - restart telegraf
+
 
 - name: configure telegraf config
   template:
@@ -23,3 +25,5 @@
     backup: yes
   notify:
     - restart telegraf
+
+

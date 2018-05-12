@@ -1,0 +1,23 @@
+- name: get rabbitmqctl cluster from the api
+  uri:
+    url: "http://localhost:15672/api/nodes/"
+    method: GET
+    user: "{{ rabbitmq_mgmt_user }}"
+    password: "{{ rabbitmq_mgmt_user_password }}"
+    force_basic_auth: yes
+    status_code: 200
+  register: rabbitmqctl_nodes
+  tags: rabbitmq_metrics
+
+
+- name: string for json query
+  set_fact:
+    rabbitmq_json_query: "json[?name=='rabbitmq@{{inventory_hostname}}'].partitions"
+
+- name: set fact affecting this host
+  set_fact:
+    rabbitmq_details: "{{ rabbitmqctl_nodes|json_query(rabbitmq_json_query) }}"
+
+- name: determine host length
+  set_fact:
+    rabbitmq_cluster_size: "{{ rabbitmq_details[0]|length }}"

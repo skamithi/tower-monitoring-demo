@@ -20,7 +20,7 @@
    urls = [ "http://192.168.121.1:9200" ]
    timeout = "5s"
    health_check_interval = "10s"
-   index_name = "telegraf-%Y.%m.%d"
+   index_name = "tower-%Y.%m.%d"
 
 [[inputs.cpu]]
   percpu = true
@@ -43,4 +43,8 @@
 
 [[inputs.exec]]
   commands = ['/usr/local/bin/tower_capacity.py']
+  data_format = 'influx'
+
+[[inputs.exec]]
+  commands = ['/usr/local/bin/tower_cluster_status.py']
   data_format = 'influx'

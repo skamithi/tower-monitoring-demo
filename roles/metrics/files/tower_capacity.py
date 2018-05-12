@@ -75,4 +75,4 @@ for _instance in output.get('instances'):
          sys_capacity = _instance.get('capacity')
          break
 
-print "tower_system_capacity,host=%s value=%s" % (active_node, sys_capacity)
+print("tower_system_capacity,host=%s value=%s" % (active_node, sys_capacity))
