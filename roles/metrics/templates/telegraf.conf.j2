@@ -1,13 +1,20 @@
 [global_tags]
 
-[agent]
+{% if 'tower' in group_names %}
+node_type='tower'
+{% endif %}
 
-  interval = "10s"
+{% if 'database' in group_names %}
+node_type = 'database'
+{% endif %}
+
+[agent]
+  interval = "{{telegraf_collection_interval}}"
   round_interval = true
   metric_batch_size = 1000
   metric_buffer_limit = 10000
   collection_jitter = "0s"
-  flush_interval = "10s"
+  flush_interval = "{{telegraf_collection_interval}}"
   flush_jitter = "0s"
   precision = ""
   debug = false
@@ -17,9 +24,9 @@
   omit_hostname = false
 
 [[outputs.elasticsearch]]
-   urls = [ "http://192.168.121.1:9200" ]
+   urls = [ "{{elasticsearch_url}}" ]
    timeout = "5s"
-   health_check_interval = "10s"
+   health_check_interval = "30s"
    index_name = "tower-%Y.%m.%d"
 
 [[inputs.cpu]]
@@ -41,9 +48,23 @@
 
 [[inputs.system]]
 
+{% if 'tower' in group_names %}
+
 {% for telegraph_script in telegraf_exec_scripts: %}
 [[inputs.exec]]
   commands = ['/usr/local/bin/{{telegraph_script}}']
   data_format = 'influx'
 
 {% endfor %}
+{% endif %}
+
+{% if 'database' in group_names %}
+[[inputs.postgresql_extensible]]
+  address = "host=localhost user={{pg_username}} password={{pg_password}} dbname={{pg_database}}"
+  max_lifetime = "0s"
+  databases = ["{{pg_database}}"]
+  [[inputs.postgresql_extensible.query]]
+    sqlquery="SELECT pg_database_size('{{pg_database}}')"
+    withdbname=false
+    tagvalue=""
+{% endif %}

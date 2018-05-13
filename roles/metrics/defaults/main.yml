@@ -1,7 +1,10 @@
 elastic_metrics_version: 6.2.4
+elasticsearch_url: 'http://192.168.121.1:9200'
+
 telegraf_version: 1.6.2-1
 telegraf_user: admin
 telegraf_passwd: tower
+telegraf_collection_interval: 10s
 
 # Rabbitmq mgmt username and password. Default to guest:guest
 rabbitmq_mgmt_user: guest

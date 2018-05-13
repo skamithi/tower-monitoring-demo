@@ -27,7 +27,7 @@
       "description": "Takes the Idle Time and substracts it from 100. So CPU includes both system and user time.",
       "fill": 1,
       "gridPos": {
-        "h": 8,
+        "h": 6,
         "w": 8,
         "x": 0,
         "y": 0
@@ -95,6 +95,7 @@
               "type": "avg"
             }
           ],
+          "query": "tag.node_type:tower",
           "refId": "A",
           "timeField": "@timestamp"
         }
@@ -147,8 +148,8 @@
       "datasource": null,
       "fill": 1,
       "gridPos": {
-        "h": 8,
-        "w": 7,
+        "h": 6,
+        "w": 8,
         "x": 8,
         "y": 0
       },
@@ -216,6 +217,7 @@
               "type": "avg"
             }
           ],
+          "query": "tag.node_type:tower",
           "refId": "A",
           "timeField": "@timestamp"
         }
@@ -267,11 +269,11 @@
       "dashes": false,
       "datasource": null,
       "description": "Shows the Output of Free memory per filesystem.",
-      "fill": 9,
+      "fill": 7,
       "gridPos": {
-        "h": 8,
-        "w": 9,
-        "x": 15,
+        "h": 6,
+        "w": 8,
+        "x": 16,
         "y": 0
       },
       "id": 4,
@@ -282,13 +284,13 @@
         "hideEmpty": true,
         "max": false,
         "min": false,
-        "rightSide": true,
+        "rightSide": false,
         "show": true,
         "total": false,
         "values": false
       },
       "lines": true,
-      "linewidth": 10,
+      "linewidth": 3,
       "links": [],
       "nullPointMode": "null",
       "percentage": false,
@@ -341,16 +343,13 @@
             {
               "field": "disk.free",
               "id": "1",
-              "inlineScript": "_value / 100000",
+              "inlineScript": null,
               "meta": {},
-              "settings": {
-                "script": {
-                  "inline": "_value / 100000"
-                }
-              },
+              "settings": {},
               "type": "avg"
             }
           ],
+          "query": "tag.node_type:tower NOT tag.path:\"/boot\"",
           "refId": "A",
           "timeField": "@timestamp"
         }
@@ -374,11 +373,11 @@
       },
       "yaxes": [
         {
-          "format": "decgbytes",
+          "format": "bytes",
           "label": null,
           "logBase": 1,
           "max": null,
-          "min": null,
+          "min": "0",
           "show": false
         },
         {
@@ -404,7 +403,7 @@
         "rgba(237, 129, 40, 0.89)",
         "#299c46"
       ],
-      "datasource": null,
+      "datasource": "tower-elastic",
       "format": "none",
       "gauge": {
         "maxValue": 100,
@@ -414,10 +413,10 @@
         "thresholdMarkers": true
       },
       "gridPos": {
-        "h": 2,
+        "h": 3,
         "w": 4,
         "x": 0,
-        "y": 8
+        "y": 6
       },
       "id": 9,
       "interval": null,
@@ -445,19 +444,17 @@
         "fillColor": "rgba(31, 118, 189, 0.18)",
         "full": false,
         "lineColor": "rgb(31, 120, 193)",
-        "show": false
+        "show": true
       },
       "tableColumn": "",
       "targets": [
         {
-          "$$hashKey": "object:191",
           "bucketAggs": [
             {
-              "$$hashKey": "object:200",
               "field": "@timestamp",
               "id": "2",
               "settings": {
-                "interval": "auto",
+                "interval": "10s",
                 "min_doc_count": 0,
                 "trimEdges": 0
               },
@@ -466,7 +463,6 @@
           ],
           "metrics": [
             {
-              "$$hashKey": "object:198",
               "field": "tower_system_capacity.value",
               "id": "1",
               "meta": {},
@@ -492,6 +488,110 @@
       "valueName": "avg"
     },
     {
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorValue": true,
+      "colors": [
+        "#299c46",
+        "rgba(237, 129, 40, 0.89)",
+        "#d44a3a"
+      ],
+      "datasource": null,
+      "format": "none",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 4,
+        "y": 6
+      },
+      "id": 8,
+      "interval": null,
+      "links": [],
+      "mappingType": 2,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "1",
+          "text": "PARTITIONED",
+          "to": "10000"
+        },
+        {
+          "from": "0",
+          "text": "OK",
+          "to": "0"
+        }
+      ],
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": false
+      },
+      "tableColumn": "",
+      "targets": [
+        {
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "auto",
+                "min_doc_count": 0,
+                "trimEdges": 0
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "metrics": [
+            {
+              "field": "tower_network_partitions.length",
+              "id": "1",
+              "meta": {},
+              "settings": {},
+              "type": "sum"
+            }
+          ],
+          "refId": "A",
+          "timeField": "@timestamp"
+        }
+      ],
+      "thresholds": "0.01,0.01",
+      "title": "Cluster Status",
+      "type": "singlestat",
+      "valueFontSize": "80%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "PARTITIONED",
+          "value": ">0"
+        }
+      ],
+      "valueName": "avg"
+    },
+    {
       "aliasColors": {},
       "bars": false,
       "dashLength": 10,
@@ -500,10 +600,10 @@
       "description": "Show System Capacity by host",
       "fill": 1,
       "gridPos": {
-        "h": 8,
+        "h": 6,
         "w": 8,
-        "x": 4,
-        "y": 8
+        "x": 8,
+        "y": 6
       },
       "id": 6,
       "legend": {
@@ -564,6 +664,7 @@
               "type": "avg"
             }
           ],
+          "query": "tag.node_type:tower",
           "refId": "A",
           "timeField": "@timestamp"
         }
@@ -571,7 +672,7 @@
       "thresholds": [],
       "timeFrom": null,
       "timeShift": null,
-      "title": "System Capacity",
+      "title": "System Capacity / Host",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -625,12 +726,12 @@
       ],
       "datasource": null,
       "description": "For each Server it shows the list of hosts that are have partitions.",
-      "fontSize": "100%",
+      "fontSize": "80%",
       "gridPos": {
-        "h": 8,
-        "w": 11,
-        "x": 12,
-        "y": 8
+        "h": 6,
+        "w": 8,
+        "x": 16,
+        "y": 6
       },
       "id": 11,
       "links": [],
@@ -697,117 +798,7 @@
         "#d44a3a"
       ],
       "datasource": null,
-      "format": "none",
-      "gauge": {
-        "maxValue": 100,
-        "minValue": 0,
-        "show": false,
-        "thresholdLabels": false,
-        "thresholdMarkers": true
-      },
-      "gridPos": {
-        "h": 3,
-        "w": 4,
-        "x": 0,
-        "y": 10
-      },
-      "id": 8,
-      "interval": null,
-      "links": [],
-      "mappingType": 2,
-      "mappingTypes": [
-        {
-          "$$hashKey": "object:816",
-          "name": "value to text",
-          "value": 1
-        },
-        {
-          "$$hashKey": "object:817",
-          "name": "range to text",
-          "value": 2
-        }
-      ],
-      "maxDataPoints": 100,
-      "nullPointMode": "connected",
-      "nullText": null,
-      "postfix": "",
-      "postfixFontSize": "50%",
-      "prefix": "",
-      "prefixFontSize": "50%",
-      "rangeMaps": [
-        {
-          "$$hashKey": "object:819",
-          "from": "1",
-          "text": "PARTITIONED",
-          "to": "10000"
-        },
-        {
-          "$$hashKey": "object:820",
-          "from": "0",
-          "text": "OK",
-          "to": "0"
-        }
-      ],
-      "sparkline": {
-        "fillColor": "rgba(31, 118, 189, 0.18)",
-        "full": false,
-        "lineColor": "rgb(31, 120, 193)",
-        "show": false
-      },
-      "tableColumn": "",
-      "targets": [
-        {
-          "$$hashKey": "object:852",
-          "bucketAggs": [
-            {
-              "$$hashKey": "object:861",
-              "field": "@timestamp",
-              "id": "2",
-              "settings": {
-                "interval": "auto",
-                "min_doc_count": 0,
-                "trimEdges": 0
-              },
-              "type": "date_histogram"
-            }
-          ],
-          "metrics": [
-            {
-              "$$hashKey": "object:859",
-              "field": "tower_network_partitions.length",
-              "id": "1",
-              "meta": {},
-              "settings": {},
-              "type": "sum"
-            }
-          ],
-          "refId": "A",
-          "timeField": "@timestamp"
-        }
-      ],
-      "thresholds": "0.01,0.01",
-      "title": "Cluster Status",
-      "type": "singlestat",
-      "valueFontSize": "80%",
-      "valueMaps": [
-        {
-          "op": "=",
-          "text": "PARTITIONED",
-          "value": ">0"
-        }
-      ],
-      "valueName": "avg"
-    },
-    {
-      "cacheTimeout": null,
-      "colorBackground": false,
-      "colorValue": true,
-      "colors": [
-        "#d44a3a",
-        "rgba(237, 129, 40, 0.89)",
-        "#299c46"
-      ],
-      "datasource": null,
+      "description": "List the percent of licenses used. If it gets to 90% be worried.",
       "format": "percent",
       "gauge": {
         "maxValue": 100,
@@ -818,9 +809,9 @@
       },
       "gridPos": {
         "h": 3,
-        "w": 4,
+        "w": 8,
         "x": 0,
-        "y": 13
+        "y": 9
       },
       "id": 14,
       "interval": null,
@@ -828,12 +819,10 @@
       "mappingType": 2,
       "mappingTypes": [
         {
-          "$$hashKey": "object:456",
           "name": "value to text",
           "value": 1
         },
         {
-          "$$hashKey": "object:457",
           "name": "range to text",
           "value": 2
         }
@@ -855,10 +844,8 @@
       "tableColumn": "",
       "targets": [
         {
-          "$$hashKey": "object:350",
           "bucketAggs": [
             {
-              "$$hashKey": "object:359",
               "field": "@timestamp",
               "id": "2",
               "settings": {
@@ -871,11 +858,15 @@
           ],
           "metrics": [
             {
-              "$$hashKey": "object:357",
               "field": "tower_inventory_count.percent_left",
               "id": "1",
+              "inlineScript": "100 - _value",
               "meta": {},
-              "settings": {},
+              "settings": {
+                "script": {
+                  "inline": "100 - _value"
+                }
+              },
               "type": "max"
             }
           ],
@@ -883,8 +874,8 @@
           "timeField": "@timestamp"
         }
       ],
-      "thresholds": "10,20",
-      "title": "License/Host Count",
+      "thresholds": "90,95",
+      "title": "Host License Usage",
       "type": "singlestat",
       "valueFontSize": "80%",
       "valueMaps": [
@@ -895,6 +886,388 @@
         }
       ],
       "valueName": "avg"
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "tower-elastic",
+      "description": "Takes the Idle Time and substracts it from 100. So CPU includes both system and user time.",
+      "fill": 1,
+      "gridPos": {
+        "h": 6,
+        "w": 8,
+        "x": 0,
+        "y": 12
+      },
+      "id": 15,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "hideZero": true,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "bucketAggs": [
+            {
+              "fake": true,
+              "field": "tag.host.keyword",
+              "id": "3",
+              "settings": {
+                "min_doc_count": 1,
+                "order": "desc",
+                "orderBy": "_term",
+                "size": "10"
+              },
+              "type": "terms"
+            },
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "auto",
+                "min_doc_count": 0,
+                "trimEdges": 0
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "metrics": [
+            {
+              "field": "cpu.usage_idle",
+              "id": "1",
+              "inlineScript": "100 - _value",
+              "meta": {},
+              "settings": {
+                "script": {
+                  "inline": "100 - _value"
+                }
+              },
+              "type": "avg"
+            }
+          ],
+          "query": "tag.node_type:database",
+          "refId": "A",
+          "timeField": "@timestamp"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Posgres CPU Usage",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": "100",
+          "min": "0",
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": null,
+      "fill": 1,
+      "gridPos": {
+        "h": 6,
+        "w": 8,
+        "x": 8,
+        "y": 12
+      },
+      "id": 17,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "hideEmpty": true,
+        "hideZero": true,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "bucketAggs": [
+            {
+              "fake": true,
+              "field": "tag.host.keyword",
+              "id": "3",
+              "settings": {
+                "min_doc_count": 1,
+                "order": "desc",
+                "orderBy": "_term",
+                "size": "10"
+              },
+              "type": "terms"
+            },
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "auto",
+                "min_doc_count": 0,
+                "trimEdges": 0
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "metrics": [
+            {
+              "field": "mem.free",
+              "id": "1",
+              "inlineScript": "_value/100000",
+              "meta": {},
+              "settings": {
+                "script": {
+                  "inline": "_value/100000"
+                }
+              },
+              "type": "avg"
+            }
+          ],
+          "query": "tag.node_type:database",
+          "refId": "A",
+          "timeField": "@timestamp"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Postgres Node Memory",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "decmbytes",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {
+        "Average disk.total": "#e5ac0e",
+        "Average postgresql.pg_database_size": "#e0f9d7"
+      },
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": null,
+      "fill": 7,
+      "gridPos": {
+        "h": 6,
+        "w": 8,
+        "x": 16,
+        "y": 12
+      },
+      "id": 19,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [
+        {
+          "alias": "Average postgresql.pg_database_size"
+        }
+      ],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "alias": "Tower Database Size",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "auto",
+                "min_doc_count": 0,
+                "trimEdges": 0
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "metrics": [
+            {
+              "field": "postgresql.pg_database_size",
+              "id": "1",
+              "meta": {},
+              "settings": {},
+              "type": "avg"
+            }
+          ],
+          "query": "tag.node_type:database",
+          "refId": "A",
+          "timeField": "@timestamp"
+        },
+        {
+          "alias": "Total Disk Size",
+          "bucketAggs": [
+            {
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "auto",
+                "min_doc_count": 0,
+                "trimEdges": 0
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "metrics": [
+            {
+              "field": "disk.total",
+              "id": "1",
+              "meta": {},
+              "settings": {},
+              "type": "avg"
+            }
+          ],
+          "query": "tag.node_type:database",
+          "refId": "B",
+          "timeField": "@timestamp"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Postgres DB Size vs Total Disk Size",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "decbytes",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": false
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     }
   ],
   "refresh": false,
@@ -936,5 +1309,5 @@
   "timezone": "",
   "title": "Tower Dashboard",
   "uid": "GG8hXFniz",
-  "version": 26
+  "version": 52
 }

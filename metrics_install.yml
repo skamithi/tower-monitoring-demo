@@ -1,4 +1,4 @@
 ---
-- hosts: tower
+- hosts: tower:database
   roles:
     - metrics

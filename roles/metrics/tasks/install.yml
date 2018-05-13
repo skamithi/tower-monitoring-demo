@@ -17,11 +17,15 @@
   with_items: "{{ telegraf_exec_scripts }}"
   notify:
     - restart telegraf
+  when: "'tower' in group_names"
 
 - name: configure telegraf config
   template:
     src: telegraf.conf.j2
     dest: /etc/telegraf/telegraf.conf
     backup: yes
+    mode: 0400
+    owner: telegraf
+    group: root
   notify:
     - restart telegraf
