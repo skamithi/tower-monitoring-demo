@@ -1,0 +1,29 @@
+#!/var/lib/awx/venv/ansible/bin/python
+
+
+"""
+Get current inventory count. Use a user that has no privileges.
+This user can still access license information
+
+Author: Stanley Karunditu
+LICENSE: MIT
+
+"""
+
+from ansible.module_utils.urls import open_url
+
+from socket import gethostname
+import json
+
+rsp = open_url( 'http://localhost/api/v2/config/',
+                url_password='{{ tower_monitor_password}}',
+                url_username='{{ tower_monitor_user }}')
+output = json.loads(rsp.read())
+total_hosts = output.get('license_info').get('instance_count')
+hosts_available = output.get('license_info').get('free_instances')
+percent_left = (hosts_available * 100) / total_hosts
+
+print("tower_inventory_count,host=%s total=%s,available=%s,percent_left=%s" %
+    (gethostname(), output.get('license_info').get('instance_count'),
+    output.get('license_info').get('free_instances'), percent_left))
+

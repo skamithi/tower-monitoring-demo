@@ -8,15 +8,15 @@
   yum:
     name: "/tmp/{{telegraf_rpm }}"
 
+
 - name: copy telegraf scripts
-  copy:
-    src: "{{ item }}"
+  template:
+    src: "{{ item }}.j2"
     dest: "/usr/local/bin/{{item}}"
     mode: 0755
   with_items: "{{ telegraf_exec_scripts }}"
   notify:
     - restart telegraf
-
 
 - name: configure telegraf config
   template:
@@ -25,5 +25,3 @@
     backup: yes
   notify:
     - restart telegraf
-
-

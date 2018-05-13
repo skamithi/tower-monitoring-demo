@@ -41,10 +41,9 @@
 
 [[inputs.system]]
 
+{% for telegraph_script in telegraf_exec_scripts: %}
 [[inputs.exec]]
-  commands = ['/usr/local/bin/tower_capacity.py']
+  commands = ['/usr/local/bin/{{telegraph_script}}']
   data_format = 'influx'
 
-[[inputs.exec]]
-  commands = ['/usr/local/bin/tower_cluster_status.py']
-  data_format = 'influx'
+{% endfor %}

@@ -178,10 +178,8 @@
       "steppedLine": false,
       "targets": [
         {
-          "$$hashKey": "object:4681",
           "bucketAggs": [
             {
-              "$$hashKey": "object:4710",
               "fake": true,
               "field": "tag.host.keyword",
               "id": "3",
@@ -194,7 +192,6 @@
               "type": "terms"
             },
             {
-              "$$hashKey": "object:4690",
               "field": "@timestamp",
               "id": "2",
               "settings": {
@@ -207,7 +204,6 @@
           ],
           "metrics": [
             {
-              "$$hashKey": "object:4688",
               "field": "mem.free",
               "id": "1",
               "inlineScript": "_value/100000",
@@ -243,7 +239,6 @@
       },
       "yaxes": [
         {
-          "$$hashKey": "object:4725",
           "format": "decmbytes",
           "label": null,
           "logBase": 1,
@@ -252,7 +247,6 @@
           "show": true
         },
         {
-          "$$hashKey": "object:4726",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -420,7 +414,7 @@
         "thresholdMarkers": true
       },
       "gridPos": {
-        "h": 3,
+        "h": 2,
         "w": 4,
         "x": 0,
         "y": 8
@@ -456,10 +450,10 @@
       "tableColumn": "",
       "targets": [
         {
-          "$$hashKey": "object:5253",
+          "$$hashKey": "object:191",
           "bucketAggs": [
             {
-              "$$hashKey": "object:5262",
+              "$$hashKey": "object:200",
               "field": "@timestamp",
               "id": "2",
               "settings": {
@@ -472,7 +466,7 @@
           ],
           "metrics": [
             {
-              "$$hashKey": "object:5260",
+              "$$hashKey": "object:198",
               "field": "tower_system_capacity.value",
               "id": "1",
               "meta": {},
@@ -506,7 +500,7 @@
       "description": "Show System Capacity by host",
       "fill": 1,
       "gridPos": {
-        "h": 7,
+        "h": 8,
         "w": 8,
         "x": 4,
         "y": 8
@@ -617,17 +611,14 @@
     {
       "columns": [
         {
-          "$$hashKey": "object:5492",
           "text": "@timestamp",
           "value": "@timestamp"
         },
         {
-          "$$hashKey": "object:5499",
           "text": "tag.host",
           "value": "tag.host"
         },
         {
-          "$$hashKey": "object:5508",
           "text": "tower_network_partitions.partitions",
           "value": "tower_network_partitions.partitions"
         }
@@ -636,7 +627,7 @@
       "description": "For each Server it shows the list of hosts that are have partitions.",
       "fontSize": "100%",
       "gridPos": {
-        "h": 7,
+        "h": 8,
         "w": 11,
         "x": 12,
         "y": 8
@@ -652,14 +643,12 @@
       },
       "styles": [
         {
-          "$$hashKey": "object:5444",
           "alias": "Time",
           "dateFormat": "YYYY-MM-DD HH:mm:ss",
           "pattern": "Time",
           "type": "date"
         },
         {
-          "$$hashKey": "object:5445",
           "alias": "",
           "colorMode": null,
           "colors": [
@@ -676,11 +665,9 @@
       ],
       "targets": [
         {
-          "$$hashKey": "object:4438",
           "bucketAggs": [],
           "metrics": [
             {
-              "$$hashKey": "object:4445",
               "field": "select field",
               "id": "1",
               "meta": {},
@@ -719,10 +706,10 @@
         "thresholdMarkers": true
       },
       "gridPos": {
-        "h": 4,
+        "h": 3,
         "w": 4,
         "x": 0,
-        "y": 11
+        "y": 10
       },
       "id": 8,
       "interval": null,
@@ -730,12 +717,12 @@
       "mappingType": 2,
       "mappingTypes": [
         {
-          "$$hashKey": "object:5193",
+          "$$hashKey": "object:816",
           "name": "value to text",
           "value": 1
         },
         {
-          "$$hashKey": "object:5194",
+          "$$hashKey": "object:817",
           "name": "range to text",
           "value": 2
         }
@@ -749,13 +736,13 @@
       "prefixFontSize": "50%",
       "rangeMaps": [
         {
-          "$$hashKey": "object:6853",
-          "from": "0.01",
+          "$$hashKey": "object:819",
+          "from": "1",
           "text": "PARTITIONED",
           "to": "10000"
         },
         {
-          "$$hashKey": "object:6855",
+          "$$hashKey": "object:820",
           "from": "0",
           "text": "OK",
           "to": "0"
@@ -765,15 +752,15 @@
         "fillColor": "rgba(31, 118, 189, 0.18)",
         "full": false,
         "lineColor": "rgb(31, 120, 193)",
-        "show": true
+        "show": false
       },
       "tableColumn": "",
       "targets": [
         {
-          "$$hashKey": "object:5129",
+          "$$hashKey": "object:852",
           "bucketAggs": [
             {
-              "$$hashKey": "object:5139",
+              "$$hashKey": "object:861",
               "field": "@timestamp",
               "id": "2",
               "settings": {
@@ -786,8 +773,106 @@
           ],
           "metrics": [
             {
-              "$$hashKey": "object:5136",
+              "$$hashKey": "object:859",
               "field": "tower_network_partitions.length",
+              "id": "1",
+              "meta": {},
+              "settings": {},
+              "type": "sum"
+            }
+          ],
+          "refId": "A",
+          "timeField": "@timestamp"
+        }
+      ],
+      "thresholds": "0.01,0.01",
+      "title": "Cluster Status",
+      "type": "singlestat",
+      "valueFontSize": "80%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "PARTITIONED",
+          "value": ">0"
+        }
+      ],
+      "valueName": "avg"
+    },
+    {
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorValue": true,
+      "colors": [
+        "#d44a3a",
+        "rgba(237, 129, 40, 0.89)",
+        "#299c46"
+      ],
+      "datasource": null,
+      "format": "percent",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 0,
+        "y": 13
+      },
+      "id": 14,
+      "interval": null,
+      "links": [],
+      "mappingType": 2,
+      "mappingTypes": [
+        {
+          "$$hashKey": "object:456",
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "$$hashKey": "object:457",
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [],
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": false
+      },
+      "tableColumn": "",
+      "targets": [
+        {
+          "$$hashKey": "object:350",
+          "bucketAggs": [
+            {
+              "$$hashKey": "object:359",
+              "field": "@timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "auto",
+                "min_doc_count": 0,
+                "trimEdges": 0
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "metrics": [
+            {
+              "$$hashKey": "object:357",
+              "field": "tower_inventory_count.percent_left",
               "id": "1",
               "meta": {},
               "settings": {},
@@ -798,8 +883,8 @@
           "timeField": "@timestamp"
         }
       ],
-      "thresholds": "0.01,0.01",
-      "title": "Cluster Status",
+      "thresholds": "10,20",
+      "title": "License/Host Count",
       "type": "singlestat",
       "valueFontSize": "80%",
       "valueMaps": [
@@ -820,8 +905,8 @@
     "list": []
   },
   "time": {
-    "from": "2018-05-12T03:12:43.967Z",
-    "to": "2018-05-12T03:15:02.430Z"
+    "from": "now-5m",
+    "to": "now"
   },
   "timepicker": {
     "refresh_intervals": [
@@ -851,5 +936,5 @@
   "timezone": "",
   "title": "Tower Dashboard",
   "uid": "GG8hXFniz",
-  "version": 21
+  "version": 26
 }
