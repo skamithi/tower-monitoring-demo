@@ -2,54 +2,11 @@
 
 
 """
-Converts the /api/v2/ping/ output from Ansible Tower
-into something usable for monitoring purposes.
+Ansible Tower - Calculates Current System Capacity usage
+Requires a usernamee and password. Create a System Auditor account
+and make this script only readable by the telegraf user.
 
-Input
--------
-{
-    "active_node": "tower1",
-    "ha": true,
-    "instance_groups": [
-        {
-            "capacity": 150,
-            "instances": [
-                "tower3",
-                "tower2",
-                "tower1"
-            ],
-            "name": "tower"
-        }
-    ],
-    "instances": [
-        {
-            "capacity": 50,
-            "heartbeat": "2018-05-10T12:47:21.845Z",
-            "node": "tower2",
-            "version": "3.2.3"
-        },
-        {
-            "capacity": 50,
-            "heartbeat": "2018-05-10T12:47:23.482Z",
-            "node": "tower3",
-            "version": "3.2.3"
-        },
-        {
-            "capacity": 50,
-            "heartbeat": "2018-05-10T12:47:36.446Z",
-            "node": "tower1",
-            "version": "3.2.3"
-        }
-    ],
-    "version": "3.2.3"
-}
--------------
-
-
-outputs the following:
----------------
-
-tower_system_capacity, host=tower1, sys_capacity=50
+tower_system_capacity, host=tower1, max_capacity=100,capacity_used=10,active_job_count=10
 
 Then define a telegraf filter as follows
 
@@ -65,14 +22,25 @@ LICENSE: MIT
 
 from ansible.module_utils.urls import open_url
 import json
+from socket import gethostname
 
-rsp = open_url( 'http://localhost/api/v2/ping')
+rsp = open_url( 'http://localhost/api/v2/instances/',
+                url_password='{{ tower_monitor_password}}',
+                url_username='{{ tower_monitor_user }}')
 output = json.loads(rsp.read())
-active_node = output.get('active_node')
-sys_capacity = 0
-for _instance in output.get('instances'):
-     if  _instance.get('node') == active_node:
-         sys_capacity = _instance.get('capacity')
-         break
+list_of_instances = output.get('results')
+_hostname = gethostname()
 
-print("tower_system_capacity,host=%s value=%s" % (active_node, sys_capacity))
+max_capacity = 0
+active_job_count = 0
+capacity_used = 0
+
+for _node in list_of_instances:
+    if _node.get('hostname') in _hostname:
+        max_capacity = _node.get('capacity')
+        active_job_count = _node.get('jobs_running')
+        capacity_used = _node.get('consumed_capacity')
+        break
+
+print("tower_system_capacity,host=%s max_capacity=%s,capacity_used=%s,active_job_count=%s" %
+    (_hostname, max_capacity, capacity_used, active_job_count))

@@ -13,7 +13,9 @@
   template:
     src: "{{ item }}.j2"
     dest: "/usr/local/bin/{{item}}"
-    mode: 0755
+    mode: 0500
+    owner: telegraf
+    group: root
   with_items: "{{ telegraf_exec_scripts }}"
   notify:
     - restart telegraf

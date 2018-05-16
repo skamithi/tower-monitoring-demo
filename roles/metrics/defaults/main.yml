@@ -11,5 +11,5 @@ rabbitmq_mgmt_user: guest
 rabbitmq_mgmt_user_password: guest
 
 # tower monitor user. Change this accordingly. Store it in Vault if need be.
-tower_monitor_user: user02
+tower_monitor_user: auditor01
 tower_monitor_password: 1q2w3e4r
