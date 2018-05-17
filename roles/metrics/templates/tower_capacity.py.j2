@@ -40,7 +40,8 @@ for _node in list_of_instances:
         max_capacity = _node.get('capacity')
         active_job_count = _node.get('jobs_running')
         capacity_used = _node.get('consumed_capacity')
+        percent_remaining  = _node.get('percent_capacity_remaining')
         break
 
-print("tower_system_capacity,host=%s max_capacity=%s,capacity_used=%s,active_job_count=%s" %
-    (_hostname, max_capacity, capacity_used, active_job_count))
+print("tower_system_capacity,host=%s max_capacity=%s,capacity_used=%s,active_job_count=%s,percent_remaining=%s" %
+    (_hostname, max_capacity, capacity_used, active_job_count, percent_remaining ))
